@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="base/swiper-3.3.1.min.css">
+    <link rel="stylesheet" href="base/fonts/iconfont.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src='base/swiper-3.3.1.min.js'></script>
+</head>
+<body>
+   <div class="wrap">
+       <header class="header">
+            <span><img src="images/1_03.gif" alt=""></span>
+            <span>
+                <i class="icon iconfont icon-fangdajing"></i>
+                <i class="icon iconfont icon-gengduo-2"></i>
+            </span>
+       </header>
+       <section class='main'>
+           <div class="swiper-container lunbo">
+               <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="images/1.jpg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/2.jpg" alt="">
+                    </div>
+               </div>
+               <div class="swiper-pagination pages"></div>
+           </div>
+           <div class="info infotop">
+               <ul>
+                   <li><span><img src='images/2_03.gif'> 全国--农行掌银</span><label>2017-11-02</label></li>
+               </ul>
+           </div>
+           <div class="info infotop">
+                <ul>
+                    <li><span><img src='images/2_06.gif'> 全国--农行掌银</span><label>2017-11-02</label></li>
+                </ul>
+            </div>
+            <div class="box">
+                    <div class="tit">便捷服务</div>
+                    <ul class="list">
+                    </ul>
+            </div>
+            <div class="lists">
+                <div class="title">您的每段旅程，我们全心陪伴</div>
+                <ul class="content">
+                    <li><span>学生时代</span><i class="icon iconfont icon-angle-down"></i></li>
+                    <li><span>职场生涯</span><i class="icon iconfont icon-angle-down"></i></li>
+                    <li class='active'><span>品质家庭</span><i class="icon iconfont icon-angle-down"></i></li>
+                    <li><span>养老保障</span><i class="icon iconfont icon-angle-down"></i></li>
+                </ul>
+            </div>
+            <div class="lists">
+                <div class="tit">产品服务</div>
+                <p><span>投资理财</span><i class="icon iconfont icon-angle-down"></i></p>
+            </div>
+       </section>
+       <marquee direction="up" scrolldelay="100" scrollamount="1" onMouseOver="this.stop()" onMouseOut="this.start()" height="30 width=302">滚动的内容</marquee>
+</div> 
+<script>
+    var swiper = new Swiper('.lunbo',{
+        loop:true,
+        autoplay:1000,
+        pagination:'.page'
+    })
+    function ajax(url) {
+        return new Promise(function(resolve,reject) {
+            var xhr = null;
+            var handler = function() {
+                if(xhr.readyState !== 4) return;
+                    if(xhr.status === 200) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject(new Error(xhr.statusText));
+                    }
+                }
+                if(window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else {
+                    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+                xhr.open('get',url,true);
+                xhr.send();
+                xhr.onreadystatechange = handler;
+        })
+    }
+    ajax('http://localhost:8080/getdata').then(function(result) {
+        var data = JSON.parse(result);
+        for(var i=0;i<data.length;i++) {
+            var li = document.createElement('li');
+            li.innerHTML=`<i class="icon iconfont ${data[i].src}"></i>
+                            <span>${data[i].text}</span>`;
+            document.querySelector('.list').appendChild(li);
+        }
+    }).catch(function(error) {
+        console.log(error);
+    })
+</script>
+</body>
+</html>
